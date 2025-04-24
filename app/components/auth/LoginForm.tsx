@@ -3,6 +3,8 @@
 import {useState} from 'react';
 import {TextField, Button, Stack, Typography, Box} from '@mui/material';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+
 
 
 
@@ -19,36 +21,40 @@ export default function LoginForm(){
 
     return(
        <form onSubmit={handleSubmit}>
-            <Stack sx={{bgcolor: 'white', paddingLeft: '3vw', paddingRight: '3vw', paddingBottom: '3vh', paddingTop: '3vh'}} spacing={2}>
+            <Stack sx={{borderRadius: '10px', bgcolor: 'white', paddingLeft: '3vw', paddingRight: '3vw', paddingBottom: '3vh', paddingTop: '3vh'}} spacing={2}>
                 <Typography variant="h6" align={'center'}>Login</Typography>
                 <Button sx=
-                {{bgcolor: 'red', 
+                {{bgcolor: 'black', 
                   borderRadius: '30vw',
+                  textTransform: 'none',
                   display: 'flex',
                   justifyContent: 'flex-start',
+                  fontWeight: 'bold',
                   pr: '2vw'
 
                 }} type="submit" variant="contained">
                   <Box 
                     component="img"
-                    src="favicon.ico"
+                    src="/icons/GoogleLogo.svg"
                     alt="Google"
                     sx={{ width: '20px', height: '20px', paddingRight: '3vw' }}
-                  />
+                  />  
                    Continue with Google
                 </Button>
-                <Button sx={{bgcolor: '#4291ff', 
+                <Button sx={{bgcolor: 'black', 
                   borderRadius: '30vw',
+                  textTransform: 'none',
                   display: 'flex',
                   justifyContent: 'flex-start',
+                  fontWeight: 'bold',
                   pr: '2vw'
                 }} 
                  type="submit" 
                  variant="contained">
                     <Box 
                     component="img"
-                    src="favicon.ico"
-                    alt="Google"
+                    src="/icons/FacebookLogo.svg"
+                    alt="Facebook"
                     sx={{ width: '20px', height: '20px', paddingRight: '3vw' }}
                   />
                   Continue with Facebook
@@ -98,9 +104,25 @@ export default function LoginForm(){
                     onChange={(e)=> setPassword(e.target.value)}
                 />
                 <Button type="submit"
-                variant="contained">
+                variant="contained"
+                sx={{
+                  borderRadius: '30vw',
+                  textTransform: 'none'
+
+                }}>
                 Login 
                 </Button>
+                <Box sx=
+                    {{
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      gap: '10px',                      
+                      }}>
+                    <Typography>Don't have an account?</Typography>
+                    <Link href="/auth/signup">
+                      <Typography>Sign up here</Typography>
+                    </Link>
+                </Box>
 
             </Stack>
         </form>
