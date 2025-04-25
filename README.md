@@ -6,8 +6,8 @@ HelpMeOut este o platformă educațională interactivă unde utilizatorii pot î
 
 ## 📸 Logo-uri
 
-<img src="./path/to/Logo.svg" alt="Logo HelpMeOut" height="100"/>
-<img src="./path/to/LogoDeschis.svg" alt="Logo HelpMeOut Deschis" height="100"/>
+<img src="https://github.com/azert9526/help-me-out/blob/main-window/public/icons/Logo.svg" alt="Logo HelpMeOut" height="100"/>
+<img src="https://github.com/azert9526/help-me-out/blob/main-window/public/icons/Logo.svg" alt="Logo HelpMeOut Deschis" height="100"/>
 
 ---
 
