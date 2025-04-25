@@ -1,16 +1,14 @@
-"use client";
+'use client';
 
-import React, { useState, ChangeEvent } from 'react';
-import { Avatar, Box, Container, Typography, Paper, TextField, Button, Select, FormControl, SelectChangeEvent, InputLabel, MenuItem, Checkbox, ListItemText, OutlinedInput} from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React, { useState } from 'react';
+import { Box, Typography, Avatar, Stack, Divider, Paper, Button} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
+import { useRouter } from 'next/navigation';
 
-const allSkills=['Programming','Cooking','Gardening']
+export default function ProfilePage() {
+  const router = useRouter();
 
-const ProfilePage = () => {
-  const [user, setUser] = useState<{
+  const [user] = useState<{
     firstname: string;
     lastname: string;
     email: string;
@@ -19,130 +17,76 @@ const ProfilePage = () => {
     birthdate: Dayjs | null;
     skills: string[];
   }>({
-    firstname: '',
-    lastname:'',
-    email: '',
-    bio: '',
+    firstname: 'prenume',
+    lastname: 'nume',
+    email: 'email',
+    bio: 'bio',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s',
-    birthdate: dayjs(),
-    skills: [],
+    birthdate: dayjs('1992-05-10'),
+    skills: ['medicine', 'programming', 'machine learning', 'public speaking'],
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUser((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setUser((prev) => ({ ...prev, avatar: imageUrl }));
-    }
-  };
-
-  const handleDeleteImage=()=>{
-    setUser((prev)=>({...prev,avatar:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s'}));
-  };
-
-  const handleDateChange = (date: Dayjs | null) => {
-    setUser((prev) => ({ ...prev, birthdate: date }));
-  };
-
-  const handleSave = () => {
-    //save in db
-    console.log('Profile saved!', {
-      ...user,
-      birthdate: user.birthdate?.format('YYYY-MM-DD'),
-    });
-    alert('Profile saved!');
+  const handleEditClick = () => {
+    router.push('/edit_profile');
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
-        <Avatar
-          src={user.avatar}
-          alt={user.firstname+user.lastname}
-          sx={{ width: 100, height: 100, margin: '0 auto', mb: 2 }}
-        />
-        <Button variant="outlined" component="label" sx={{ mb: 2 }}>
-          Change pic
-          <input type="file" hidden accept="image/*" onChange={handleImageUpload} />
+    <Box sx={{ p: 4, display: 'flex', justifyContent: 'center' }}>
+      <Paper elevation={4} sx={{ p: 4, borderRadius: 4, maxWidth: 1000, width: '100%', display: 'flex', gap: 4}}>
+        <Button
+          variant="contained"
+          sx={{ position: 'absolute', top: 16, right: 16 }}
+          onClick={handleEditClick}
+        >
+          Edit profile
         </Button>
-        <Button variant='outlined' component="label" onClick={handleDeleteImage} sx={{mb:2}}>
-          Delete pic
-        </Button>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <TextField
-                label="First name"
-                name="firstname"
-                value={user.firstname}
-                onChange={handleChange}
-                fullWidth
-            />
-            <TextField
-                label="Last name"
-                name="lastname"
-                value={user.lastname}
-                onChange={handleChange}
-                fullWidth
-            />
-            <TextField
-                label="Email"
-                name="email"
-                value={user.email}
-                onChange={handleChange}
-                fullWidth
-            />
-            <TextField
-                label="Description"
-                name="bio"
-                value={user.bio}
-                onChange={handleChange}
-                fullWidth
-                multiline
-                rows={3}
-            />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-                label="Birth date"
-                value={user.birthdate}
-                onChange={handleDateChange}
-                slotProps={{
-                    textField: { fullWidth: true },
-                }}
-            />
-          </LocalizationProvider>
-          <FormControl fullWidth>
-            <InputLabel id="skills-label">Skills</InputLabel>
-            <Select labelId="skills-label" multiple value={user.skills} onChange={(e)=>{
-                const {value}=e.target;
-                setUser((prev)=>({
-                    ...prev,
-                    skills: typeof value==='string' ? value.split(','):value,
-                    }));
-                }}
-                input={<OutlinedInput label="Skills"/>}
-                renderValue={(selected)=>selected.join(', ')}
-            >
-                {allSkills.map((skill)=>(
-                    <MenuItem key={skill} value={skill}>
-                        <Checkbox checked={user.skills.includes(skill)}/>
-                        <ListItemText primary={skill}/>
-                    </MenuItem>
-                 ))}
-            </Select>
-          </FormControl>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh'}}>
+          <Avatar
+            src={user.avatar}
+            alt={`${user.firstname} ${user.lastname}`}
+            sx={{ width: 200, height: 200 }}
+          />
         </Box>
-        <Box mt={3}>
-            <Button variant="contained" color="primary" onClick={handleSave}>
-                Save
-            </Button>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh'}}>
+          <Typography variant="h4" fontWeight="bold">
+            {user.firstname} {user.lastname}
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
+            {user.email}
+          </Typography>
+
+          <Divider sx={{ my: 2 }} />
+
+          <Typography variant="h6" fontWeight="bold">Bio</Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            {user.bio}
+          </Typography>
+
+          <Typography variant="h6" fontWeight="bold">Birthday</Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            {user.birthdate ? user.birthdate.format('DD MMMM YYYY') : ''}
+          </Typography>
+
+          <Typography variant="h6" fontWeight="bold">Skills</Typography>
+          <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 1 }}>
+            {user.skills.map((skill, i) => (
+              <Box
+                key={i}
+                sx={{
+                  px: 2,
+                  py: 0.5,
+                  backgroundColor: '#e0e0e0',
+                  borderRadius: '999px',
+                  fontSize: '0.85rem',
+                }}
+              >
+                {skill}
+              </Box>
+            ))}
+          </Stack>
         </Box>
       </Paper>
-    </Container>
+    </Box>
   );
-};
-
-export default ProfilePage;
+}
