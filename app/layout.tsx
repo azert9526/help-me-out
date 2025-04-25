@@ -1,5 +1,5 @@
-// app/layout.tsx
 import React from 'react';
+import './globals.css'; // Importă stilurile globale
 
 export const metadata = {
   title: 'HelpMeOut',
