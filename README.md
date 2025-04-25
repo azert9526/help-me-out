@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HelpMeOut
 
-## Getting Started
+HelpMeOut este o platformă educațională interactivă unde utilizatorii pot învăța să rezolve probleme practice, să pună întrebări și să ajute alți utilizatori oferindu-le răspunsuri.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📸 Logo-uri
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<img src="./path/to/Logo.svg" alt="Logo HelpMeOut" height="100"/>
+<img src="./path/to/LogoDeschis.svg" alt="Logo HelpMeOut Deschis" height="100"/>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎨 Paleta de culori
 
-## Learn More
+| Nume variabilă | Culoare     | Cod HEX     |
+|----------------|-------------|-------------|
+| `--lapis-lazuli` | ![#2f6690](https://via.placeholder.com/15/2f6690/000000?text=+) `#2f6690` |
+| `--cerulean`     | ![#3a7ca5](https://via.placeholder.com/15/3a7ca5/000000?text=+) `#3a7ca5` |
+| `--platinum`     | ![#d9dcd6](https://via.placeholder.com/15/d9dcd6/000000?text=+) `#d9dcd6` |
+| `--indigo-dye`   | ![#16425b](https://via.placeholder.com/15/16425b/000000?text=+) `#16425b` |
+| `--sky-blue`     | ![#81c3d7](https://via.placeholder.com/15/81c3d7/000000?text=+) `#81c3d7` |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🖌️ Stil vizual
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Designul aplicației este gândit pentru a fi intuitiv și prietenos, folosind nuanțe inspirate din paleta de mai sus pentru a crea un echilibru între claritate și personalitate.
 
-## Deploy on Vercel
+<img src="./path/to/Paleta-HelpMeOut.png" alt="Paleta de culori HelpMeOut" style="max-width: 100%;"/>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> ✨ Contribuie la dezvoltarea HelpMeOut și ajută la construirea unei comunități de învățare colaborativă.
