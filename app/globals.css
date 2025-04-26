@@ -1,26 +1,29 @@
-@import "tailwindcss";
-
+/* Paleta de culori */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --lapis-lazuli: #2f6690ff;
+  --cerulean: #3a7ca5ff;
+  --platinum: #d9dcd6ff;
+  --indigo-dye: #16425bff;
+  --sky-blue: #81c3d7ff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Stiluri globale */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--platinum); /* Fundal general */
+  font-family: 'Roboto', sans-serif; /* Font implicit */
+  color: var(--indigo-dye); /* Culoare text implicit */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+button {
+  font-family: inherit;
+  cursor: pointer;
 }
