@@ -1,14 +1,20 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import { Box, Typography, Avatar, Stack, Divider, Paper, Button} from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
-import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import LoginForm from "./components/auth/LoginForm";
+import { Container } from "@mui/material";
+import { useState, useEffect } from 'react'
 
-export default function ProfilePage() {
-  
+
+export default function Home() {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   return (
-    <Box sx={{ p: 4, display: 'flex', justifyContent: 'center' }}>
-    </Box>
+    <Container sx={{width: '70vw', display: 'flex', height: '100vh', bgcolor :'blue', alignItems: 'center', justifyContent: 'center'}}>
+      <LoginForm></LoginForm>
+    </Container>
   );
 }
