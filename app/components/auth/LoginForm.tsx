@@ -61,20 +61,6 @@ export default function LoginForm(){
                 </Button>
                 <Box sx={{ bgcolor: 'black', borderSpacing: '5vh' , height: '0.25vh', width: '100%' }} />
                 <TextField
-                sx={{
-                    backgroundColor: '#f0f0f0', 
-                    '& .MuiInputBase-root': {
-                      backgroundColor: '#ffffff', 
-                    },
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: '#1976d2',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#1565c0', 
-                      },
-                    },
-                  }}
                     label="Email"
                     type="email"
                     value={email}
@@ -87,20 +73,6 @@ export default function LoginForm(){
                     
                     value={password}
                     size="small"
-                    sx={{
-                        backgroundColor: '#f0f0f0', 
-                        '& .MuiInputBase-root': {
-                          backgroundColor: '#ffffff', 
-                        },
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: '#1976d2', 
-                          },
-                          '&:hover fieldset': {
-                            borderColor: '#1565c0',
-                          },
-                        },
-                      }}
                     onChange={(e)=> setPassword(e.target.value)}
                 />
                 <Button type="submit"

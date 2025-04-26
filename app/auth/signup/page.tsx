@@ -10,7 +10,7 @@ export default function SignUpPage() {
       display: 'flex', 
       height: '100vh', 
       bgcolor :'blue', 
-      alignItems: 'center', 
+      alignItems: 'center',
       justifyContent: 'center'}}>
       <SignUpForm />
     </Container>
