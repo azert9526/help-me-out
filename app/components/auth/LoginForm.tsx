@@ -4,19 +4,33 @@ import {useState} from 'react';
 import {TextField, Button, Stack, Typography, Box} from '@mui/material';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 
 
 
 export default function LoginForm(){
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        ///backend calls
-       // console.log(email);
-       // console.log(password);
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      const name = email;
+        const res = await  fetch('/api/auth/login',{
+            method: "POST",
+            headers: {
+              'Content-Type' : 'application/json',
+            },
+            body: JSON.stringify({name, password}),
+        });
+                
+        if(res.status >= 200 && res.status <= 299){
+          router.push("/main-window");
+      }
+      else{
+        console.log("Ceva nu a mers bine la inregistrare!");
+      }
     }
 
     return(

@@ -1,20 +1,42 @@
+'use client'
 import { Stack, Typography, Button, Box, TextField } from "@mui/material";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm()
 {
-
+     const router = useRouter();
      const [email, setEmail] = useState('');
      const [password, setPassword] = useState('');
      const [confirmedPassword, setConfirmedPassword] = useState('');
-     const [username, setUsername] = useState('');
+     const [name, setName] = useState('');
         
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
+
+        if(password !== confirmedPassword){
+          alert("parolele nu corespund!");
+          e.preventDefault();
+          return;
+
+        }
         e.preventDefault();
-        ///backend calls
-        // console.log(email);
-        // console.log(password);
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type' : 'application/json',
+          },
+          body: JSON.stringify({name, email, password}),
+        });
+        const data = await res.json();
+
+        if(res.status >= 200 && res.status <= 299){
+            router.push("/main-window");
+        }
+        else{
+          console.log("Ceva nu a mers bine la inregistrare!");
+        }
+
     }
     return( <form onSubmit={handleSubmit}>
         <Stack sx={{borderRadius: '10px', bgcolor: 'white', paddingLeft: '3vw', paddingRight: '3vw', paddingBottom: '3vh', paddingTop: '3vh'}} spacing={2}>
@@ -29,8 +51,8 @@ export default function SignUpForm()
             <TextField
                 label="Username"
                 type="text"
-                value={username}
-                onChange={(e)=> setUsername(e.target.value)}
+                value={name}
+                onChange={(e)=> setName(e.target.value)}
                 size="small"
             />
             <TextField

@@ -6,7 +6,8 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 export function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     
-    const publicPaths = ["/api/auth/login", "/api/auth/register"];
+    const publicPaths = ["/api/auth/login", "/api/auth/register", "/api/test-mongodb"];
+
     if (publicPaths.includes(pathname)) {
         return NextResponse.next();
     }
@@ -14,14 +15,16 @@ export function middleware(req: NextRequest) {
     const token = req.cookies.get("token")?.value;
 
     if (!token) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        console.log(pathname);
+
+        return NextResponse.redirect(new URL("/auth/login", req.url));
     }
 
     try {
         jwt.verify(token, JWT_SECRET);
         return NextResponse.next();
     } catch (e) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        return NextResponse.redirect(new URL("/auth/login", req.url));
     }
 }
 

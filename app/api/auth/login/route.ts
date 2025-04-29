@@ -14,9 +14,11 @@ export async function POST(req: Request) {
 
   const userRepo = new UserMongoRepository(mongoDbClient);
 
-  const user = await userRepo.findByNameOrEmail(name)
-  if (!user) return Response.json({ message: "Invalid credentials" }, {status: 401})
 
+  const user = await userRepo.findByNameOrEmail(name);
+
+  if (!user) return Response.json({ message: "Invalid credentials" }, {status: 401})
+  
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return Response.json({ message: "Invalid credentials" }, {status: 401})
 
