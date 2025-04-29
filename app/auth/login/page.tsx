@@ -9,7 +9,6 @@ export default function LogInPage() {
     {{width: '70vw', 
       display: 'flex', 
       height: '100vh', 
-      bgcolor :'blue', 
       alignItems: 'center', 
       justifyContent: 'center'}}>
       <LoginForm />

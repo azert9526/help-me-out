@@ -1,7 +1,10 @@
+'use client'
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, TextField, Card, CardContent, Grid, Box } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 const MainWindow = () => {
+  const router = useRouter();
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100vw', backgroundColor: '#f5f5f5' }}>
       {/* Navbar */}
@@ -12,7 +15,7 @@ const MainWindow = () => {
             <img src="/icons/LogoDeschis.svg" alt="Logo" width="40" height="40" />
           </Box>
           {/* Log In Button */}
-          <Button color="inherit" variant="outlined">
+          <Button onClick={() => {router.push('/auth/login');}} color="inherit" variant="outlined">
             Log In
           </Button>
         </Toolbar>
@@ -25,7 +28,6 @@ const MainWindow = () => {
           How can we help you?
         </Typography>
 
-        {/* Search Bar */}
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', width: '100%', maxWidth: '600px' }}>
           <TextField
             placeholder="Search..."
@@ -42,7 +44,6 @@ const MainWindow = () => {
           </Button>
         </div>
 
-        {/* Cards Section */}
         <Grid container spacing={3} justifyContent="center">
           { [
             { title: 'Categories', description: 'Explore the available categories' },
