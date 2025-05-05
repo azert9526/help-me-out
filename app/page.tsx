@@ -4,8 +4,8 @@ import Image from "next/image";
 import LoginForm from "./components/auth/LoginForm";
 import { Container } from "@mui/material";
 import { useState, useEffect } from 'react'
-import MainPage  from '@/app/components/MainPage'
 import ProfilePage from '@/app/profile/page'
+import MainWindow from "./components/MainWindow";
 //<LoginForm></LoginForm>
 
 /*
@@ -45,7 +45,7 @@ export default function Home() {
   }, [])
   return (
     <div>
-      <ProfilePage></ProfilePage>
+      <MainWindow></MainWindow>
       <div style={{ marginTop: "20px", padding: "10px", background: "#f0f0f0" }}>
         {data === null ? (
           <p>🔄 Se testează conexiunea la MongoDB...</p>

@@ -28,10 +28,11 @@ export async function POST(req: Request) {
     { expiresIn: "30d" }
   );
 
+
   //todo: probleme cu csrf??
   const headers = {"Set-Cookie": cookie.serialize("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "development",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 30, // 30 de zile

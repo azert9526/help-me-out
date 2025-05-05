@@ -2,9 +2,12 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, TextField, Card, CardContent, Grid, Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import {useEffect, useState} from 'react'
 
 const MainWindow = () => {
   const router = useRouter();
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100vw', backgroundColor: '#f5f5f5' }}>
       {/* Navbar */}
