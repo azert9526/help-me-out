@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 export function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     
-    const publicPaths = ["/api/auth/login", "/api/auth/register", "/api/test-mongodb", "/auth/login", "/auth/register"];
+    const publicPaths = ["/api/auth/login", "/api/auth/register", "/api/test-mongodb"];
 
     if (publicPaths.includes(pathname)) {
         return NextResponse.next();
@@ -15,22 +15,19 @@ export function middleware(req: NextRequest) {
     const token = req.cookies.get("token")?.value;
 
     if (!token) {
+        console.log(pathname);
+
         return NextResponse.redirect(new URL("/auth/login", req.url));
     }
 
-
     try {
-        //jwt.verify(token, JWT_SECRET);
-        console.log("am ajuns aici");
-        const decoded = jwt.verify(token, JWT_SECRET); // Validează token-ul
-        console.log(decoded);
+        jwt.verify(token, JWT_SECRET);
         return NextResponse.next();
     } catch (e) {
-        console.log(e);
         return NextResponse.redirect(new URL("/auth/login", req.url));
     }
 }
 
 export const config = {
-    matcher: ["/main-window", "/api/:path*"],
+    matcher: ["/api/:path*"],
 };
