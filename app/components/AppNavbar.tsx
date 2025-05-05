@@ -8,6 +8,7 @@ export default function AppNavbar() {
     
   
   return (
+    <div>
     <AppBar
       position="static"
       sx={{ bgcolor: "primary.main", padding: "0.5rem" }}
@@ -47,5 +48,6 @@ export default function AppNavbar() {
         </Box>
       </Toolbar>
     </AppBar>
+    </div>
   );
 }
