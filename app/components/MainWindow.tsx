@@ -13,13 +13,14 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import AppNavbar from './AppNavbar';
 
 const MainWindow = () => {
   const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
 
   const items = [
-    { title: "Categories", description: "Explore the available categories", path: "/" },
+    { title: "Categories", description: "Explore the available categories", path: "/questions-categories" },
     { title: "Ask a Question", description: "Post your question here", path: "/ask_a_question"  },
     {
       title: "Answer a Question",
@@ -37,7 +38,7 @@ const MainWindow = () => {
         backgroundColor: "#f5f5f5",
       }}
     >
-      {/* Navbar */}
+    {/*  
       <AppBar
         position="static"
         sx={{ bgcolor: "primary.main", padding: "0.5rem" }}
@@ -75,8 +76,8 @@ const MainWindow = () => {
           </Box>
         </Toolbar>
       </AppBar>
-
-      {/* Main Content */}
+      */}
+      <AppNavbar></AppNavbar>
       <div
         style={{
           flexGrow: 1,
