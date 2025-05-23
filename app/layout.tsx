@@ -1,5 +1,5 @@
 import React from 'react';
-import './globals.css'; // Importă stilurile globale
+import './globals.css'; 
 
 export const metadata = {
   title: 'HelpMeOut',
