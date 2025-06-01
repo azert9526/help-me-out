@@ -7,6 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Question } from "@/domain/question";
 import QuestionItem from "../components/QuestionItem";
 import { useState, useEffect } from "react";
+import AppFooter from "../components/AppFooter";
 
 export default function CategoriesPage() {
   const [category, setCategory] = useState<string>("");
@@ -67,9 +68,22 @@ export default function CategoriesPage() {
     : testItemsListQuestions;
 
   return (
-    <div style={{ height: "100vh", overflow: "hidden" }}>
+    <div style={{
+      display:'flex',
+      flexDirection:'column',
+      minHeight:'100vh',
+      width:'100vw'
+    }}>
       <AppNavbar></AppNavbar>
-      <Box sx={{ paddingLeft:"1vw", paddingRight: "1vw", backgroundColor: "#6cb0f5" }}>
+      <Box sx={{ 
+        flexGrow:1,
+        paddingLeft:"1vw", 
+        paddingRight: "1vw", 
+        backgroundColor: "#6cb0f5" ,
+        display: 'flex',
+        flexDirection:'column'
+        }}
+      >
         <Box sx={{ paddingTop: "3vh", display: "flex", }}>
           <Typography
             sx={{ width: "15vw", paddingRight: "2vw", paddingLeft: "5vw" }}
@@ -152,6 +166,7 @@ export default function CategoriesPage() {
           </List>
         </Box>
       </Box>
+      <AppFooter/>
     </div>
   );
 }

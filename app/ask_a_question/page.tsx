@@ -3,94 +3,84 @@
 import { useState } from "react";
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Avatar,
-  TextField,
-  Typography,
   Paper,
 } from "@mui/material";
 import { textAlign } from "@mui/system";
 
+import ActiveMembers from "../components/ask-a-question/ActiveMembers";
+import QuestionForm from "../components/ask-a-question/QuestionForm";
+import AppNavbar from "../components/AppNavbar";
+import AppFooter from "../components/AppFooter";
+
 const members = [
-  { name: "Ana Popescu", answers: 87, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
-  { name: "Ion Ionescu", answers: 74, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
-  { name: "Maria Georgescu", answers: 68, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
+  { username: "anapopescu", answers: 87, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
+  { username: "ionionescu", answers: 74, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
+  { username: "mariageorgescu", answers: 68, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
 ];
 
 export default function MembersPage() {
-  const [question, setQuestion] = useState("");
+    const [subject, setSubject] = useState('');
+    const [category, setCategory] = useState('');
+    const [description, setDescription] = useState('');
 
-  const handleSearch = () => {
-    alert('Button pressed');
-  };
+    const handleSubmit=()=>{
+        alert(`Subject ${subject}\nCategory: ${category}\nDescription: ${description}`);
+    }
 
   return (
-    <Box sx={{ p: 4, display: 'flex',justifyContent: 'center'}}>
-        <Paper elevation={3} sx={{p: 4, 
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          width: "100vw",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+      <AppNavbar/>
+      <Box 
+        sx={{ 
+          display: 'flex',
+          justifyContent: 'center', 
+          alignItems:"center",
+          px:2
+        }}
+      >
+        <Paper 
+          elevation={3} 
+          sx={{
+            p: 4, 
             borderRadius:4,
+            display: 'flex',
+            justifyContent: 'row', 
+            gap:4,
             maxWidth:1000,
             width:'100%',
-            height:'100vh'
-         }}>
-            <Box sx={{display:"flex", flexDirection:"row", gap:30}}>
-                <Box sx={{display:"flex", flexDirection:"column", gap:2, alignItems:"center", justifyContent:"center", height:'100vh'
-                }}>
-                    <Typography variant="h4" sx={{mb: 2}}>
-                        Most active members
-                    </Typography>
-
-                    <Card sx={{mb:4}}>
-                    <CardContent sx={{maxHeight:300, overflowY:'auto'}}>
-                        <List>
-                            {members.map((member,index)=>(
-                                <ListItem key={index}>
-                                    <ListItemAvatar>
-                                        <Avatar src={member.avatar}/>
-                                    </ListItemAvatar>
-                                
-                                    <ListItemText 
-                                        primary={member.name}
-                                        secondary={`${member.answers} questions answered`}
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </CardContent>
-                </Card>
-                </Box>
-                <Box sx={{display:"flex", flexDirection:"column",gap:2, justifyContent:"center"}}>
-                    <Typography variant="h5">
-                        Ask a question:
-                    </Typography>
-
-                    <TextField 
-                        fullWidth
-                        label="Enter your question here..."
-                        value={question}
-                        onChange={(e)=>setQuestion(e.target.value)}
-                        sx={{mb:2}}
-                    />
-                    <Button 
-                        variant="contained"
-                        onClick={handleSearch}
-                        fullWidth
-                    >
-                        Ask    
-                    </Button> 
-
-                    <Typography variant="body2" color="text.secondary">
-                        Explain your request in a few words!
-                    </Typography>
-                </Box>
-            </Box>
+            alignItems: 'flex-start',
+          }}
+        >
+          <Box 
+            sx={{
+              display:"flex", 
+              flexDirection:"row", 
+              gap:30, 
+              alignItems: 'center'
+            }}
+          >
+            <ActiveMembers members={members}/>
+            <QuestionForm 
+              subject={subject}
+              category={category}
+              description={description}
+              onSubjectChange={setSubject}
+              onCategoryChange={setCategory}
+              onDescriptionChange={setDescription}
+              onSubmit={handleSubmit}
+            />
+          </Box>
         </Paper>
-    </Box>
+      </Box>
+      <AppFooter/>
+    </div>
   );
 }
