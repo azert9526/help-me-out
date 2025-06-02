@@ -19,13 +19,14 @@ import AppFooter from "./AppFooter";
 const MainWindow = () => {
   const router = useRouter();
 
+
   const items = [
     { title: "Categories", description: "Explore the available categories", path: "/questions-categories" },
     { title: "Ask a Question", description: "Post your question here", path: "/ask_a_question"  },
     {
       title: "Answer a Question",
       description: "Help others by answering questions",
-      path: "/",
+      path: "/answer-a-question",
     },
   ];
   return (
@@ -101,23 +102,8 @@ const MainWindow = () => {
             width: "100%",
             maxWidth: "600px",
           }}
-        >
-          <TextField
-            placeholder="Search..."
-            variant="outlined"
-            fullWidth
-            sx={{
-              bgcolor: "white",
-              borderRadius: "5px",
-              boxShadow: 1,
-            }}
-          />
-          <Button
-            variant="contained"
-            sx={{ marginLeft: "1rem", height: "56px" }}
-          >
-            Search
-          </Button>
+        >  
+
         </div>
 {/*
         <Grid container spacing={3} justifyContent="center">

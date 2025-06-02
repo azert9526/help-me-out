@@ -19,6 +19,7 @@ export class MongoRepository<T extends Entity<ObjectId>> implements Repository<T
       const filter: Filter<T> = { _id: id } as Filter<T>;
       return await this.collection.findOne(filter) as T;
     }
+
   
     async findAll(): Promise<T[]> {
       return await this.collection.find().toArray() as T[];

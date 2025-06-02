@@ -6,14 +6,6 @@ import { Container } from "@mui/material";
 import { useState, useEffect } from 'react'
 import ProfilePage from '@/app/profile/page'
 import MainWindow from "./components/MainWindow";
-//<LoginForm></LoginForm>
-
-/*
-    <Container sx={{width: '70vw', display: 'flex', height: '100vh', bgcolor :'blue', alignItems: 'center', justifyContent: 'center'}}>
-      <LoginForm></LoginForm>
-    </Container>
-
-*/
 export default function Home() {
   const [isClient, setIsClient] = useState(false)
 
@@ -46,15 +38,6 @@ export default function Home() {
   return (
     <div>
       <MainWindow></MainWindow>
-      <div style={{ marginTop: "20px", padding: "10px", background: "#f0f0f0" }}>
-        {data === null ? (
-          <p>🔄 Se testează conexiunea la MongoDB...</p>
-        ) : data.success ? (
-          <p>✅ Conectat la DB. Colecții: {data.collections.join(", ")}</p>
-        ) : (
-          <p>❌ Eroare la conectare: {JSON.stringify(data.error)}</p>
-        )}
-      </div>
     </div>
   );
 }

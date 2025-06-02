@@ -8,81 +8,79 @@ import { Question } from "@/domain/question";
 import QuestionItem from "../components/QuestionItem";
 import { useState, useEffect } from "react";
 import AppFooter from "../components/AppFooter";
+import { Category } from "@/domain/category";
 
 export default function CategoriesPage() {
   const [category, setCategory] = useState<string>("");
 
-  //aici eventual sa fie incarcate categoriile din backend ??
-  //de adaugat si iconite poate?
-  const categories = [
-    { title: "Programming" },
-    { title: "Cooking" },
-    { title: "Cleaning" },
-    { title: "Mathematics" },
-    { title: "Medicine" },
-    { title: "Cars" },
-  ];
 
-  //hardcoded
-  const testItemsListQuestions: Question<string>[] = [
-    {
-      _id: "1",
-      title: "Q1",
-      description: "desc1",
-      createdDate: "06/05/2025",
-      authorID: "1",
-      answerCount: 3,
-      category: "Cooking",
-    },
-    {
-      _id: "2",
-      title: "Q2",
-      description: "desc2",
-      createdDate: "03/05/2025",
-      authorID: "2",
-      answerCount: 15,
-      category: "Cooking",
-    },
-    {
-      _id: "3",
-      title: "Q3",
-      description: "desc3",
-      createdDate: "01/05/2025",
-      authorID: "3",
-      answerCount: 13,
-      category: "Medicine",
-    },
-    {
-      _id: "4",
-      title: "Q4",
-      description: "desc4",
-      createdDate: "12/05/2024",
-      authorID: "4",
-      answerCount: 10,
-      category: "Programming",
-    },
-  ];
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredItems = category
-    ? testItemsListQuestions.filter((q) => q.category === category)
-    : testItemsListQuestions;
+  const [categories, setCategories] = useState<Category[]>([]);
 
+
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await fetch("/api/questions");
+        const data = await res.json();
+        setQuestions(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories");
+        const data = await res.json();
+        setCategories(data);
+
+      }
+      catch (error) {
+        console.error("Error fetching categories:", error);
+
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+
+
+    fetchQuestions();
+    fetchCategories();
+  }, []);
+
+
+  const selectedCategory = categories.find(c => c.name === category);
+
+  const filteredItems = category && selectedCategory
+    ? questions.filter(q =>
+      q.categories.some(catId => catId.toString() === selectedCategory._id.toString())
+    )
+    : questions;
+
+  console.log(categories);
   return (
     <div style={{
-      display:'flex',
-      flexDirection:'column',
-      minHeight:'100vh',
-      width:'100vw'
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
+      width: '100vw'
     }}>
       <AppNavbar></AppNavbar>
-      <Box sx={{ 
-        flexGrow:1,
-        paddingLeft:"1vw", 
-        paddingRight: "1vw", 
-        backgroundColor: "#6cb0f5" ,
+      <Box sx={{
+        flexGrow: 1,
+        paddingLeft: "1vw",
+        paddingRight: "1vw",
+        backgroundColor: "#6cb0f5",
         display: 'flex',
-        flexDirection:'column'
-        }}
+        flexDirection: 'column'
+      }}
       >
         <Box sx={{ paddingTop: "3vh", display: "flex", }}>
           <Typography
@@ -106,7 +104,7 @@ export default function CategoriesPage() {
             {categories.map((item, index) => (
               <ListItem
                 onClick={() => {
-                  setCategory(item.title);
+                  setCategory(item.name);
                 }}
                 key={index}
                 sx={{
@@ -122,16 +120,15 @@ export default function CategoriesPage() {
                     transform: "scale(1.05)",
                   },
                   "&:focus": {
-                    // Stiluri când elementul este selectat
-                    backgroundColor: "#0465c7", // Culoare de fundal diferită
-                    border: "2px black", // Border portocaliu
-                    transform: "scale(1.1)", // Mărirea elementului
+                    backgroundColor: "#0465c7",
+                    border: "2px black",
+                    transform: "scale(1.1)",
                   },
                   color: "#e8eaeb",
                 }}
                 tabIndex={0}
               >
-                {item.title}
+                {item.name}
               </ListItem>
             ))}
           </List>
@@ -166,7 +163,7 @@ export default function CategoriesPage() {
           </List>
         </Box>
       </Box>
-      <AppFooter/>
+      <AppFooter />
     </div>
   );
 }

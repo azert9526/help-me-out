@@ -16,7 +16,9 @@ export async function POST(req: Request) {
 
 
 
-        const newUser = { name, email, password: hashedPassword, role: Roles.user, likes: [], dislikes: [], score: 0 }
+        const newUser = { name, email, password: hashedPassword, role: Roles.user, likes: [], dislikes: [], score: 0, skills: [],
+            bio: "",
+         }
         const parsed = UserSchema.parse(newUser); // Throws if invalid
 
 

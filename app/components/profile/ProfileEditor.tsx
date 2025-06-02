@@ -18,22 +18,16 @@ export default function ProfileEditor() {
   const router = useRouter();
 
   const [user, setUser] = useState<{
-    firstname: string;
-    lastname: string;
     username:string,
     email: string;
     bio: string;
     avatar: string;
-    birthdate: Dayjs | null; 
     skills: string[];
   }>({
-    firstname: '',
-    lastname: '',
     username: '',
     email: '',
     bio: '',
     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s',
-    birthdate: null, 
     skills: [],
     });
     
@@ -63,10 +57,36 @@ export default function ProfileEditor() {
     setUser((prev)=>({...prev, skills}));
   }
 
-  const handleSave_ =()=>{
-    alert("Button pressed!");
+const handleSave_ = async () => {
+  try {
+    const res = await fetch('/api/users', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // datele pe care le vrei actualizate, extrase din user state
+        username: user.username,
+        email: user.email,
+        bio: user.bio,
+        skills: user.skills,
+        // dacă ai birthdate, transform-o într-un string ISO (sau alt format)
+        avatar: user.avatar,
+      }),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Failed to update user');
+    }
+
     router.push('/profile');
+  } catch (error) {
+    alert(`Error updating profile: ${(error as Error).message}`);
   }
+};
+
+
 
   return (
     <Container maxWidth="sm" sx={{ mt: 4 , mb:4}}>
@@ -79,23 +99,11 @@ export default function ProfileEditor() {
         
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             { <PersonalInfoForm
-                firstname={user.firstname}
-                lastname={user.lastname}
                 username={user.username}
                 email={user.email}
                 bio={user.bio}
                 onChange={handleChange}
             /> }
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                    label="Birth date"
-                    value={user.birthdate}
-                    onChange={handleDateChange}
-                    slotProps={{
-                        textField: { fullWidth: true },
-                    }}
-                />
-            </LocalizationProvider>
             { <SkillsSelector
                 selectedSkills={user.skills}
                 allSkills={allSkills}
