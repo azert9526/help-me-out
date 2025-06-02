@@ -1,3 +1,4 @@
+import { Question } from "@/domain/question";
 import { verifySession } from "@/lib/dal";
 import mongoClient from "@/lib/db";
 import { QuestionMongoRepository } from "@/repo/database/questionRepository";
@@ -8,7 +9,7 @@ export async function POST(req: Request) {
   
   try {
     const body = await req.json();
-    const validated = QuestionSchema.parse(body);
+    const validated = QuestionSchema.parse(body) as Question;
 
     const questionRepo = new QuestionMongoRepository(mongoClient);
     await questionRepo.save(validated);
@@ -34,10 +35,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
-
-export async function GET(req: Request) {
-  const questionRepo = new QuestionMongoRepository(mongoClient);
-  const allQuestions = await questionRepo.findAll();
-  return Response.json(JSON.stringify(allQuestions), { status: 200 });
 }

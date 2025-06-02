@@ -11,8 +11,6 @@ export default function AppNavbar() {
 
   if (loading) return null;
 
-  console.log(session)
-
   return (
     <div>
       <AppBar

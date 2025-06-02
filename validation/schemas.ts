@@ -3,12 +3,7 @@ import { Answer } from "@/domain/answer";
 import { ObjectId } from "mongodb";
 import { Roles } from "@/domain/user";
 
-export const objectIdSchema = z
-  .string()
-  .refine((val) => ObjectId.isValid(val), {
-    message: "Invalid ObjectId",
-  })
-  .transform((val) => new ObjectId(val));
+export const objectIdSchema = z.any()
 
 export const AnswerSchema = z.object({
   text: z.string().optional(),

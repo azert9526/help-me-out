@@ -1,79 +1,86 @@
 "use client";
+import { useEffect, useRef, useState, useCallback } from "react";
+import {
+  Box,
+  Typography,
+  List,
+  ListItem,
+  CircularProgress,
+} from "@mui/material";
 import AppNavbar from "../components/AppNavbar";
-import { Box, Typography } from "@mui/material";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import { Question } from "@/domain/question";
 import QuestionItem from "../components/QuestionItem";
-import { useState, useEffect } from "react";
+import { Question } from "@/domain/question";
+import { Category } from "@/domain/category";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
+
+const PAGE_SIZE = 10;
 
 export default function CategoriesPage() {
-  const [category, setCategory] = useState<string>("");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [category, setCategory] = useState<Category | null>(null);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  //aici eventual sa fie incarcate categoriile din backend ??
-  //de adaugat si iconite poate?
-  const categories = [
-    { title: "Programming" },
-    { title: "Cooking" },
-    { title: "Cleaning" },
-    { title: "Mathematics" },
-    { title: "Medicine" },
-    { title: "Cars" },
-  ];
+  const router = useRouter();
 
-  //hardcoded
-  const testItemsListQuestions: Question<string>[] = [
-    {
-      _id: "1",
-      title: "Q1",
-      description: "desc1",
-      createdDate: "06/05/2025",
-      authorID: "1",
-      answerCount: 3,
-      category: "Cooking",
-    },
-    {
-      _id: "2",
-      title: "Q2",
-      description: "desc2",
-      createdDate: "03/05/2025",
-      authorID: "2",
-      answerCount: 15,
-      category: "Cooking",
-    },
-    {
-      _id: "3",
-      title: "Q3",
-      description: "desc3",
-      createdDate: "01/05/2025",
-      authorID: "3",
-      answerCount: 13,
-      category: "Medicine",
-    },
-    {
-      _id: "4",
-      title: "Q4",
-      description: "desc4",
-      createdDate: "12/05/2024",
-      authorID: "4",
-      answerCount: 10,
-      category: "Programming",
-    },
-  ];
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const loadQuestions = useCallback(async () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+
+    const res = await fetch(`/api/questions/recent?skip=${page * PAGE_SIZE}&limit=${PAGE_SIZE}`);
+    const newQuestions: Question[] = await res.json();
+
+    if (newQuestions.length < PAGE_SIZE) {
+      setHasMore(false);
+    }
+
+    setQuestions((prev) => [...prev, ...newQuestions]);
+    setPage((prev) => prev + 1);
+    setLoading(false);
+  }, [page, loading, hasMore]);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((res) => res.json())
+      .then(setCategories)
+      .catch(console.error);
+
+    loadQuestions();
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          loadQuestions();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const current = observerRef.current;
+    if (current) observer.observe(current);
+    return () => {
+      if (current) observer.unobserve(current);
+    };
+  }, [loadQuestions, hasMore, loading]);
 
   const filteredItems = category
-    ? testItemsListQuestions.filter((q) => q.category === category)
-    : testItemsListQuestions;
+    ? questions.filter((q) =>  q.categories.includes(category._id))
+    : questions;
+
 
   return (
     <div style={{ height: "100vh", overflow: "hidden" }}>
-      <AppNavbar></AppNavbar>
-      <Box sx={{ paddingLeft:"1vw", paddingRight: "1vw", backgroundColor: "#6cb0f5" }}>
-        <Box sx={{ paddingTop: "3vh", display: "flex", }}>
-          <Typography
-            sx={{ width: "15vw", paddingRight: "2vw", paddingLeft: "5vw" }}
-          >
+      <AppNavbar />
+      <Box sx={{ paddingLeft: "1vw", paddingRight: "1vw", backgroundColor: "#6cb0f5" }}>
+        <Box sx={{ paddingTop: "3vh", display: "flex" }}>
+          <Typography sx={{ width: "15vw", paddingRight: "2vw", paddingLeft: "5vw" }}>
             Categories
           </Typography>
           <Typography sx={{ width: "85vw", paddingLeft: "10vw" }}>
@@ -81,6 +88,7 @@ export default function CategoriesPage() {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", height: "80vh" }}>
+          {/* Categories List */}
           <List
             sx={{
               width: "15vw",
@@ -91,36 +99,31 @@ export default function CategoriesPage() {
           >
             {categories.map((item, index) => (
               <ListItem
-                onClick={() => {
-                  setCategory(item.title);
-                }}
+                onClick={() => category == item ? setCategory(null) : setCategory(item)}
                 key={index}
                 sx={{
                   paddingLeft: "3vw",
                   marginBottom: "1vh",
-                  backgroundColor: "#037ffc",
+                  backgroundColor: category == item ? "#0465c7" : "#037ffc",
                   paddingInlineStart: "4vw",
                   borderRadius: "3vw",
                   transition: "all 0.2s ease-in-out",
+                  border: category == item ? "2px black" : "0px", // Border portocaliu
                   "&:hover": {
                     cursor: "pointer",
                     boxShadow: 2,
                     transform: "scale(1.05)",
                   },
-                  "&:focus": {
-                    // Stiluri când elementul este selectat
-                    backgroundColor: "#0465c7", // Culoare de fundal diferită
-                    border: "2px black", // Border portocaliu
-                    transform: "scale(1.1)", // Mărirea elementului
-                  },
                   color: "#e8eaeb",
                 }}
                 tabIndex={0}
               >
-                {item.title}
+                {item.name}
               </ListItem>
             ))}
           </List>
+
+          {/* Questions List */}
           <List
             sx={{
               width: "60vw",
@@ -131,6 +134,7 @@ export default function CategoriesPage() {
           >
             {filteredItems.map((item, index) => (
               <ListItem
+                onClick={() => router.push(`/questions/${item._id.toString()}`)} 
                 key={index}
                 sx={{
                   paddingLeft: "3vw",
@@ -146,9 +150,15 @@ export default function CategoriesPage() {
                   color: "#e8eaeb",
                 }}
               >
-                <QuestionItem<string> question={item}></QuestionItem>
+                <QuestionItem<string> question={item} />
               </ListItem>
             ))}
+            {loading && (
+              <Box sx={{ textAlign: "center", mt: 2 }}>
+                <CircularProgress />
+              </Box>
+            )}
+            <div ref={observerRef} style={{ height: "1px" }}></div>
           </List>
         </Box>
       </Box>

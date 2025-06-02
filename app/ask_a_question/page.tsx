@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import { useSession } from "@/hooks/useSession";
 import { Question } from "@/domain/question";
+import { ObjectId } from "mongodb";
 
 type LeaderboardUser = {
   name: string;
@@ -50,6 +51,7 @@ export default function AskAQuestionPage() {
             likedBy: [],
             dislikedBy: []
         } as Omit<Question, "_id">;
+
 
         const res = await fetch("/api/questions", {
             method: "POST",
