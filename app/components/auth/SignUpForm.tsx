@@ -14,7 +14,7 @@ export default function SignUpForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     if (password !== confirmedPassword) {
-      alert("parolele nu corespund!");
+      alert("Parolele nu corespund!");
       e.preventDefault();
       return;
     }
