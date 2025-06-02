@@ -13,6 +13,7 @@ import { Question } from "@/domain/question";
 import { Category } from "@/domain/category";
 import { redirect } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
+import AppFooter from "../components/AppFooter";
 
 const PAGE_SIZE = 10;
 
