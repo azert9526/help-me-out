@@ -1,4 +1,3 @@
-'use client'
 
 import MainWindow from "@/app/components/MainWindow";
 

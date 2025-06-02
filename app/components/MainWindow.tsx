@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AppNavbar from './AppNavbar';
+import AppFooter from "./AppFooter";
 
 const MainWindow = () => {
   const router = useRouter();
@@ -160,6 +161,7 @@ const MainWindow = () => {
           ))}
         </Box>
       </div>
+      <AppFooter/>
     </div>
   );
 };

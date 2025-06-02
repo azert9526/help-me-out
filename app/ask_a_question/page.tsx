@@ -3,17 +3,6 @@
 import { useState, useEffect } from "react";
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Avatar,
-  TextField,
-  Typography,
   Paper,
 } from "@mui/material";
 import { useSession } from "@/hooks/useSession";
@@ -23,6 +12,18 @@ type LeaderboardUser = {
   name: string;
   score: number;
 };
+import { textAlign } from "@mui/system";
+
+import ActiveMembers from "../components/ask-a-question/ActiveMembers";
+import QuestionForm from "../components/ask-a-question/QuestionForm";
+import AppNavbar from "../components/AppNavbar";
+import AppFooter from "../components/AppFooter";
+
+const members = [
+  { username: "anapopescu", answers: 87, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
+  { username: "ionionescu", answers: 74, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
+  { username: "mariageorgescu", answers: 68, avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s" },
+];
 
 export default function AskAQuestionPage() {
     const [question, setQuestion] = useState("");
