@@ -1,92 +1,58 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import { Box, Typography, Avatar, Stack, Divider, Paper, Button} from '@mui/material';
-import dayjs, { Dayjs } from 'dayjs';
+import React, { useState, useEffect } from 'react';
+import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import ProfilePageComp from '../components/profile/ProfilePageComp';
+import AppNavbar from '../components/AppNavbar';
+import AppFooter from '../components/AppFooter';
+import { User } from '@/domain/user';
 
 export default function ProfilePage() {
   const router = useRouter();
+  const [user, setUser] = useState<User | undefined>(undefined);
 
-  const [user] = useState<{
-    firstname: string;
-    lastname: string;
-    email: string;
-    bio: string;
-    avatar: string;
-    birthdate: Dayjs | null;
-    skills: string[];
-  }>({
-    firstname: 'prenume',
-    lastname: 'nume',
-    email: 'email',
-    bio: 'bio',
-    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s',
-    birthdate: dayjs('1992-05-10'),
-    skills: ['medicine', 'programming', 'machine learning', 'public speaking'],
-  });
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await fetch('/api/users');
+        if (!res.ok) throw new Error('User not logged in');
+        const data = await res.json();
+        setUser(data);
+      } catch (error) {
+        console.error('User not logged in or error fetching:', error);
+        router.push('/auth/login'); // redirect dacă nu e logat
+      }
+    }
 
-  const handleEditClick = () => {
-    router.push('/edit_profile');
-  };
+    fetchUser();
+  }, [router]);
+
+  if (!user) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        Loading user data...
+      </div>
+    );
+  }
 
   return (
-    <Box sx={{ p: 4, display: 'flex', justifyContent: 'center' }}>
-      <Paper elevation={4} sx={{ p: 4, borderRadius: 4, maxWidth: 1000, width: '100%', display: 'flex', gap: 4}}>
-        <Button
-          variant="contained"
-          sx={{ position: 'absolute', top: 16, right: 16 }}
-          onClick={handleEditClick}
-        >
-          Edit profile
-        </Button>
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh'}}>
-          <Avatar
-            src={user.avatar}
-            alt={`${user.firstname} ${user.lastname}`}
-            sx={{ width: 200, height: 200 }}
-          />
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        width: "100vw",
+        backgroundColor: "#f5f5f5",
+      }}
+    >
+      <AppNavbar />
+      <Box sx={{ p: 4, display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ position: 'relative', width: '100%', maxWidth: 1000 }}>
+          <ProfilePageComp user={user} />
         </Box>
-
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh'}}>
-          <Typography variant="h4" fontWeight="bold">
-            {user.firstname} {user.lastname}
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
-            {user.email}
-          </Typography>
-
-          <Divider sx={{ my: 2 }} />
-
-          <Typography variant="h6" fontWeight="bold">Bio</Typography>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            {user.bio}
-          </Typography>
-
-          <Typography variant="h6" fontWeight="bold">Birthday</Typography>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            {user.birthdate ? user.birthdate.format('DD MMMM YYYY') : ''}
-          </Typography>
-
-          <Typography variant="h6" fontWeight="bold">Skills</Typography>
-          <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 1 }}>
-            {user.skills.map((skill, i) => (
-              <Box
-                key={i}
-                sx={{
-                  px: 2,
-                  py: 0.5,
-                  backgroundColor: '#e0e0e0',
-                  borderRadius: '999px',
-                  fontSize: '0.85rem',
-                }}
-              >
-                {skill}
-              </Box>
-            ))}
-          </Stack>
-        </Box>
-      </Paper>
-    </Box>
+      </Box>
+      <AppFooter />
+    </div>
   );
 }

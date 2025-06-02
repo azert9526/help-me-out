@@ -14,9 +14,11 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AppNavbar from './AppNavbar';
+import AppFooter from "./AppFooter";
 
 const MainWindow = () => {
   const router = useRouter();
+
 
   const items = [
     { title: "Categories", description: "Explore the available categories", path: "/questions-categories" },
@@ -24,7 +26,7 @@ const MainWindow = () => {
     {
       title: "Answer a Question",
       description: "Help others by answering questions",
-      path: "/",
+      path: "/answer-a-question",
     },
   ];
   return (
@@ -100,23 +102,8 @@ const MainWindow = () => {
             width: "100%",
             maxWidth: "600px",
           }}
-        >
-          <TextField
-            placeholder="Search..."
-            variant="outlined"
-            fullWidth
-            sx={{
-              bgcolor: "white",
-              borderRadius: "5px",
-              boxShadow: 1,
-            }}
-          />
-          <Button
-            variant="contained"
-            sx={{ marginLeft: "1rem", height: "56px" }}
-          >
-            Search
-          </Button>
+        >  
+
         </div>
 {/*
         <Grid container spacing={3} justifyContent="center">
@@ -160,6 +147,7 @@ const MainWindow = () => {
           ))}
         </Box>
       </div>
+      <AppFooter/>
     </div>
   );
 };

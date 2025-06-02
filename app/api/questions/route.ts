@@ -36,3 +36,9 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function GET(req: Request) {
+  const questionRepo = new QuestionMongoRepository(mongoClient);
+  const allQuestions = await questionRepo.findAll();
+  return Response.json(allQuestions, { status: 200 });
+}

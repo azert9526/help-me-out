@@ -10,7 +10,10 @@ export interface User extends Entity<ObjectId> {
   password: string;
   email: string;
   role: Roles;
+  googleId?: string;
   likes: ObjectId[],
   dislikes: ObjectId[],
+  skills: string[],
+  bio: string,
   score: number; 
 }

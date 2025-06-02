@@ -59,3 +59,21 @@ export async function updateSession() {
         path: '/',
     })
 }
+
+export async function getSession(): Promise<SessionPayload | null> {
+    // Linia problematică corectată:
+    const session = (await cookies()).get('session')?.value
+    if (!session) {
+        return null;
+    }
+    const rawPayload = await decrypt(session);
+
+    // Verificare pentru a satisface TypeScript și pentru a returna SessionPayload | null
+    if (rawPayload && typeof rawPayload === 'object' && 'userId' in rawPayload && 'userName' in rawPayload) {
+        // Opțional: Poți face o conversie explicită a userId la ObjectId dacă e necesar
+        // const userId = typeof rawPayload.userId === 'string' ? new ObjectId(rawPayload.userId) : rawPayload.userId;
+        return rawPayload as SessionPayload;
+    }
+
+    return null; // Returnează null dacă payload-ul nu este valid sau este undefined
+}

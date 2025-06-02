@@ -75,6 +75,7 @@ export default function CategoriesPage() {
     : questions;
 
 
+  console.log(categories);
   return (
     <div style={{ height: "100vh", overflow: "hidden" }}>
       <AppNavbar />
@@ -119,6 +120,7 @@ export default function CategoriesPage() {
                 tabIndex={0}
               >
                 {item.name}
+                {item.name}
               </ListItem>
             ))}
           </List>
@@ -162,6 +164,7 @@ export default function CategoriesPage() {
           </List>
         </Box>
       </Box>
+      <AppFooter />
     </div>
   );
 }
