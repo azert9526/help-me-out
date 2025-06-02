@@ -33,8 +33,9 @@ export default function QuestionPage() {
     if (!_id || loading || !hasMore) return;
     setLoading(true);
 
+    console.log(sortBy)
     const res = await fetch(
-      `/api/questions/${_id}/answers?sort=${sortBy}&skip=${page * PAGE_SIZE}&limit=${PAGE_SIZE}`
+      `/api/questions/${_id}/answers?sortBy=${sortBy}&skip=${page * PAGE_SIZE}&limit=${PAGE_SIZE}`
     );
     const newAnswers = await res.json();
     if (newAnswers.length < PAGE_SIZE) setHasMore(false);
@@ -87,6 +88,27 @@ export default function QuestionPage() {
     loadAnswers();
   };
 
+  const handleVote = async (answerId: string, action: "like" | "dislike") => {
+    const res = await fetch(`/api/answers/${answerId}/vote`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: session?.userId,
+        action,
+      }),
+    });
+
+    if (res.ok) {
+      const { rating } = await res.json();
+      setAnswers((prev) =>
+        prev.map((a) => (a._id === answerId ? { ...a, rating } : a))
+      );
+    } else {
+      const err = await res.json();
+      alert(`Error: ${err.message || "Vote failed"}`);
+    }
+  };
+
 
   if (sessionLoading) return null;
   
@@ -129,7 +151,7 @@ export default function QuestionPage() {
           setAnswers([]);
           setPage(0);
           setHasMore(true);
-          setSortBy(e.target.value as "date" | "rating");
+          setSortBy(e.target.value as "rating" | "date");
         }}
         sx={{ my: 2 }}
         label="Sort by"
@@ -146,6 +168,18 @@ export default function QuestionPage() {
               <Typography variant="caption">
                 {new Date(answer.createdDate).toLocaleString()} • Rating: {answer.rating}
               </Typography>
+              <Button
+                size="small"
+                onClick={() => handleVote(answer._id, "like")}
+              >
+                👍 Like
+              </Button>
+              <Button
+                size="small"
+                onClick={() => handleVote(answer._id, "dislike")}
+              >
+                👎 Dislike
+              </Button>
             </Box>
           </ListItem>
         ))}
