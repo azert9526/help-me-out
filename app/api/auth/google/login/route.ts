@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 
 
 export async function POST(req: Request) {
-    console.log("DADA");
-    const { name, password } = await req.json();
+    const data = await req.json();
+    console.log(data);
     return Response.json({ message: "Logged in" }, {status:201});
 }

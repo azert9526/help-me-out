@@ -50,16 +50,7 @@ export default function LoginForm() {
         }),
         
       });
-/*
-      console.log(res);
-      const data = await res.json();
-      console.log(data);
 
-      if (res.status >= 200 && res.status <= 299) {
-        router.push("/main-window"); // Redirecționează la fel ca la login-ul normal
-      } else {
-        setErrMessage(data.message || "Eroare la autentificarea Google.");
-      }*/
     } catch (error) {
       console.error("Eroare la trimiterea token-ului Google la backend:", error);
       setErrMessage("A apărut o problemă la conectare. Încearcă din nou.");
