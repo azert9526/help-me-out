@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { jwtVerify, SignJWT } from 'jose'; // Importă funcțiile relevante din jose
+import { decrypt } from "./lib/session";
+import { verifySession } from "./lib/dal";
 
-
-const JWT_SECRET = process.env.JWT_SECRET!;
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
@@ -12,25 +12,18 @@ export async function middleware(req: NextRequest) {
     const publicPaths = [
         "/auth/login",
         "/auth/register",
+        "/main-window",
         "/api/auth/login",
         "/api/auth/register",
         "/api/test-mongodb",
+        "/api/session",
       ];
 
     if (publicPaths.includes(pathname)) {
         return NextResponse.next();
     }
 
-    const token = req.cookies.get("token")?.value;
-
-    
-
-    if (!token) {
-        return NextResponse.redirect(new URL("/auth/login", req.url));
-    }
-
     /*
-
     try {
         console.log("intra aici");
         jwt.verify(token, JWT_SECRET);
@@ -40,13 +33,12 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/auth/login", req.url));
     }*/
 
-    try {
-        const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
-        console.log("Token is valid:", payload);
-        return NextResponse.next();
-    } catch (e) {
+    const payload = await verifySession();
+
+    if(!payload)
         return NextResponse.redirect(new URL("/auth/login", req.url));
-    }
+
+    return NextResponse.next();
 
 }
 
@@ -54,4 +46,5 @@ export const config = {
     matcher: [
         "/api/:path*",        
         "/profile",
-      ],};
+      ],
+};

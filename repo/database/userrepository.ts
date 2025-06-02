@@ -1,11 +1,10 @@
-import { User as UserGeneric } from "@/domain/user";
-import { MongoRepository } from "./mongorepository";
+import { User } from "@/domain/user";
+import { MongoRepository } from "./mongoRepository";
 import { MongoClient, ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 import { Repository } from "../repository";
 import logger from "@/lib/logger";
 
-type User = UserGeneric<ObjectId>
 
 export interface UserRepository extends Repository<User, ObjectId> {
     findByNameOrEmail(name: string) : Promise<User>;
@@ -14,7 +13,7 @@ export interface UserRepository extends Repository<User, ObjectId> {
 export class UserMongoRepository extends MongoRepository<User> implements UserRepository {
     constructor(mongoClient : MongoClient) {
         logger.info("Initializing UserMongoRepository");
-        const db = mongoClient.db(process.env.MONGODB_DB_NAME);
+        const db = mongoClient.db();
         super(db.collection<User>("users"));
         
     }
@@ -26,7 +25,17 @@ export class UserMongoRepository extends MongoRepository<User> implements UserRe
               { email: name },
               { name: name },
             ],
-        }) as User;
-        
+        }) as User;   
+    }
+
+    /*
+    return the first numberOfUsers highest rated users
+    */
+    async getUsersWithHighestScore(numberOfUsers : number) : Promise<User[]> {
+        return await this.collection
+            .find({}, { projection: { name: 1, score: 1, _id: 0 } } )
+            .sort({ score: -1 })
+            .limit(numberOfUsers)
+            .toArray();
     }
 }

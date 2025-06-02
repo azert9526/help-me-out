@@ -1,10 +1,8 @@
-import { MongoRepository } from "./mongorepository";
+import { MongoRepository } from "./mongoRepository";
 import { MongoClient, ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 import { Repository } from "../repository";
-import { Question as GenericQuestion } from "@/domain/question";
-
-type Question = GenericQuestion<ObjectId>;
+import { Question } from "@/domain/question";
 
 export interface QuestionRepository extends Repository<Question, ObjectId> {
     

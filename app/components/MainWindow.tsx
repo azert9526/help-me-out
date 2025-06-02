@@ -17,7 +17,6 @@ import AppNavbar from './AppNavbar';
 
 const MainWindow = () => {
   const router = useRouter();
-  const [loggedIn, setLoggedIn] = useState(false);
 
   const items = [
     { title: "Categories", description: "Explore the available categories", path: "/questions-categories" },
